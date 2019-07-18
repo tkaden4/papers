@@ -1,0 +1,12 @@
+{
+  "papers": [
+    {
+      "file": "static\\linear_bounded_functional_prettyprinting.pdf",
+      "tags": ["haskell", "compiler", "programming", "theory", "research"]
+    },
+    {
+      "url": "https://www.cs.indiana.edu/~sabry/papers/information-effects.pdf",
+      "tags": ["functional programming", "information theory", "programming", "cs"]
+    }
+  ]
+}
