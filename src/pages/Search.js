@@ -19,7 +19,7 @@ export const Header = ({ user, numPapers }) => (
   <>
     <div style={{ fontSize: "2em" }}> Papers for {user} </div>
     <div style={{ fontSize: "1.24em", opacity: 0.8 }}>
-      {numPapers}
+      {numPapers + " "}
       Papers Available
     </div>
   </>
