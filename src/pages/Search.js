@@ -17,9 +17,10 @@ import * as rxjs from "rxjs";
 
 export const Header = ({ user, numPapers }) => (
   <>
-    <div style={{ fontSize: "2em" }}>Papers for {user}</div>
+    <div style={{ fontSize: "2em" }}> Papers for {user} </div>
     <div style={{ fontSize: "1.24em", opacity: 0.8 }}>
-      {numPapers} Papers Available
+      {numPapers}
+      Papers Available
     </div>
   </>
 );
@@ -101,7 +102,7 @@ export const SearchPage = ({ initialPapers }) => {
           .map((paper, i) => (
             <Col className="pdfCol" lg={3} sm={5} xs={12} key={i}>
               <PDFCard
-                url={"/papers/" + paper.ref}
+                url={"papers/" + paper.ref}
                 name={path.basename(paper.ref, ".pdf")}
                 tags={paper.tags}
               />
