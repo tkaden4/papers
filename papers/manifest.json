@@ -7,6 +7,10 @@
     {
       "url": "https://www.cs.indiana.edu/~sabry/papers/information-effects.pdf",
       "tags": ["functional programming", "information theory", "programming", "cs"]
+    },
+    {
+      "file": "static\\final-tagless.pdf",
+      "tags": ["haskell", "design", "functional programming", "theory"]
     }
   ]
 }
