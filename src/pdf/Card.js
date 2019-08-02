@@ -22,7 +22,7 @@ export const Tag = ({ tag }) => (
 );
 
 export default ({ url, name, tags }) => (
-  <Card style={{ maxWidth: "18rem" }}>
+  <Card style={{ maxWidth: "18rem", margin: "10px auto" }}>
     {/* <Card.Img bg="dark" variant="top" src={thumbnailPath(url)} /> */}
     <Card.Body>
       <Card.Title>{name}</Card.Title>

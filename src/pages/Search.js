@@ -11,7 +11,6 @@ import {
 import PDFCard from "../pdf/Card";
 import config from "../../papers/config.json";
 import path from "path";
-import slash from "slash";
 import Fuse from "fuse.js";
 import * as rxjs from "rxjs";
 
@@ -25,8 +24,12 @@ export const Header = ({ user, numPapers }) => (
   </>
 );
 
-export const SearchBar = ({ text = "", onValueChange = _ => {} }) => {
+export const SearchBar = ({ text = "", onValueChange = _ => {}, onSelectorChange = _ => {}}) => {
   let [current, setCurrent] = useState(["Tag", "Name"]);
+  const setSelector = cur => {
+    setCurrent(cur);
+    onSelectorChange(cur[0]);
+  };
   return (
     <InputGroup className="mb-3">
       <DropdownButton
@@ -39,7 +42,7 @@ export const SearchBar = ({ text = "", onValueChange = _ => {} }) => {
             <Dropdown.Item
               key={i}
               href="#"
-              onClick={() => setCurrent(current.slice().reverse())}
+              onClick={() => setSelector(current.slice().reverse())}
             >
               {but}
             </Dropdown.Item>
@@ -58,21 +61,27 @@ export const SearchBar = ({ text = "", onValueChange = _ => {} }) => {
 export const SearchPage = ({ initialPapers }) => {
   let [searchState, setSearchState] = useState("");
   let [papers, setPapers] = useState(initialPapers);
-  let fuse = new Fuse(initialPapers, {
-    keys: ["tags"],
-    shouldSort: false,
-    location: 0
-  });
+  let [selector, setSelector] = useState("Tag");
+  const searchMethod = {
+    "Tag": new Fuse(initialPapers, {
+      keys: ["tags"],
+      shouldSort: false,
+      location: 0
+    }),
+    "Name": new Fuse(initialPapers, {
+      keys: ["name"],
+      threshold: 0.2
+    })
+  };
+
   let subject = new rxjs.Subject();
-
   let observable = subject.asObservable();
-
   observable.subscribe(state => {
     setSearchState(state);
     if (state === "") {
       setPapers(initialPapers);
     } else {
-      setPapers(fuse.search(state));
+      setPapers(searchMethod[selector].search(state));
     }
   });
 
@@ -86,24 +95,17 @@ export const SearchPage = ({ initialPapers }) => {
           <SearchBar
             text={searchState}
             onValueChange={state => subject.next(state)}
+            onSelectorChange={setSelector}
           />
         </Col>
       </Row>
       <Row style={{ marginTop: "12px" }}>
         {papers
-          .map(paper => {
-            if (paper.url) {
-              return { ...paper, ref: path.basename(paper.url) };
-            } else {
-              let file = slash(paper.file);
-              return { ...paper, ref: path.basename(file) };
-            }
-          })
           .map((paper, i) => (
             <Col className="pdfCol" lg={3} sm={5} xs={12} key={i}>
               <PDFCard
                 url={"papers/" + paper.ref}
-                name={path.basename(paper.ref, ".pdf")}
+                name={paper.name}
                 tags={paper.tags}
               />
             </Col>
